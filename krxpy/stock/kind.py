@@ -7,7 +7,7 @@ class Kind:
 
     def __init__(self) -> None:
         self.url_info = "http://kind.krx.co.kr/corpgeneral/corpList.do"
-        self.url_ipo  = "http://kind.krx.co.kr/listinvstg/pubofrprogcom.do"
+        self.url_ipo = "http://kind.krx.co.kr/listinvstg/pubofrprogcom.do"
 
     @property
     def info(self):

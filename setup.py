@@ -2,17 +2,18 @@
 # https://setuptools.pypa.io/en/latest/setuptools.html#using-find-packages
 # https://stackoverflow.com/questions/43253701/python-packaging-subdirectories-not-installed
 from setuptools import setup, find_packages
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
+from pathlib import Path
+this_dir = Path(__file__).parent
+long_description = (this_dir / "README.md").read_text()
 
 setup(
     name    = 'krxpy',
-    version = '0.0.1',
+    version = '0.0.2',
     license = 'MIT',
-    description = "KRX Data Scraping ...",
+    description = "KRX Data Crawling ...",
     long_description = long_description,
     long_description_content_type = 'text/markdown',
-    url = 'https://github.com/YongBeomKim',
+    url = 'https://github.com/YongBeomKim/krxpy',
     author = 'momukji lab',
     author_email = 'ybkim@momukji.com',
     keywords = ['krxpy'],
@@ -24,7 +25,8 @@ setup(
     ),
     install_requires=[
         'pytip',
-        'pandas==2.0.2',
+        'pandas',
+        'lxml',
         'tqdm',
         'requests',
     ],
