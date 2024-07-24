@@ -8,7 +8,7 @@ long_description = (this_dir / "README.md").read_text()
 
 setup(
     name    = 'krxpy',
-    version = '0.0.3',
+    version = '0.0.7',
     license = 'MIT',
     description = "KRX Data Crawling ...",
     long_description = long_description,

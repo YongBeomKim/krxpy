@@ -27,10 +27,16 @@ def info_krx():
         return df
 
     # Main Process
+    referer = "http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201010101"
+    HEADER = instance.headers
+    HEADER["Referer"] = referer
     response = requests.post(
-        instance.url, headers=instance.headers, data=instance.data
+        instance.url, headers=HEADER, data=instance.data
     ).json()
-    df = pandas.DataFrame(response['OutBlock_1'])
-    df = post_process(df)
-    df['상장일'] = list(map(lambda x :date_to_string(x), df['상장일']))
-    return df
+    if response.get('OutBlock_1') is not None:
+        df = pandas.DataFrame(response['OutBlock_1'])
+        df = post_process(df)
+        df['상장일'] = list(map(lambda x :date_to_string(x), df['상장일']))
+        return df
+    else:
+        return None

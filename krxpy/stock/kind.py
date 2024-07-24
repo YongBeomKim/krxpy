@@ -8,17 +8,9 @@ class Kind:
     def __init__(self) -> None:
         self.url_info = "http://kind.krx.co.kr/corpgeneral/corpList.do"
         self.url_ipo = "http://kind.krx.co.kr/listinvstg/pubofrprogcom.do"
-
-    @property
-    def info(self):
-        form_data = {
-            "method":"download",
-            "searchType":"13",
+        self.headers = {
+            "User-Agent":"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/94.0"
         }
-        params = parse.urlencode(form_data, encoding='UTF-8', doseq=True)
-        url = f"{self.url_info}?{params}"
-        df  = pandas.read_html(url, header=0)[0]
-        return df
 
 
     def ipo(self, end:str=None, start:str=None):
@@ -46,17 +38,9 @@ class Kind:
         }
         params = parse.urlencode(form_data, encoding='UTF-8', doseq=True)
         url = f"{self.url_ipo}?{params}"
-        return pandas.read_html(url, header=0, flavor='lxml', encoding='cp949')[0]
-
-
-KINDCLASS = Kind()
-
-
-def info_kind():
-    r"""KIND 에서 상장기업정보 불러오기"""
-    df = KINDCLASS.info
-    df['종목코드'] = list(map(lambda x : f"{x:06d}", df['종목코드']))
-    return df
+        response = requests.get(url, headers=self.headers)
+        response_io = StringIO(str(response.text))
+        return pandas.read_html(response_io, header=0, flavor='html5lib', encoding='cp949')[0]
 
 
 def ipo_kind(date:str=None, from_date:str=None):
@@ -72,7 +56,7 @@ def ipo_kind(date:str=None, from_date:str=None):
         from_date = date_to_string(date, datetime_obj=True)
         from_date = from_date - datetime.timedelta(days=90)
 
-    df = KINDCLASS.ipo(start=str(from_date), end=date)
+    df = Kind().ipo(start=str(from_date), end=date)
 
     # Post Processing ...
     items = df.iloc[0,:].values.tolist()

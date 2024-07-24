@@ -21,13 +21,17 @@ class HEADERS:
         mozilla firefox header setting"""
         headers = requests.structures.CaseInsensitiveDict()
         headers["Connection"] = "keep-alive"
+        headers["Origin"] = "http://data.krx.co.kr"
+        headers["Host"] = "data.krx.co.kr"
         headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0"
-        headers["Upgrade-Insecure-Requests"] = "1"
-        headers["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+        headers["Accept"] = "application/json, text/javascript, */*; q=0.01"
         headers["Accept-Language"] = "en-US,en;q=0.5"
         headers["Accept-Encoding"] = "gzip, deflate"
-        headers["Host"] = "data.krx.co.kr"
-        headers["Origin"] = "http://data.krx.co.kr"
+        headers["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8"
+        headers["X-Requested-With"] = "XMLHttpRequest"
+        headers["Content-Length"] = "88"
+        headers["Pragma"] = "no-cache"
+        headers["Cache-Control"] = "no-cache"
         return headers
 
     def set_data(self):

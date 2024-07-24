@@ -17,6 +17,7 @@ class KofiaData(HeaderOfKofia):
     """
     # - `credit_deal()`   : 신용거래 체결주수 추이
 
+
     def market(self, start:str=None, end:str=None, gap:int=7, market:str='KOSPI'):
         r"""증시동향 : 유가증권, 코스닥 현황"""
         assert market.upper() in ['KOSPI', 'KOSDAQ'], "KOSPI, KOSDAQ 을 입력해 주세요"
@@ -24,6 +25,7 @@ class KofiaData(HeaderOfKofia):
         column = {"TMPV1":'날짜','TMPV2':f'{market.upper()}지수','TMPV3':'거래량',
             'TMPV4':'거래대금','TMPV5':'시가총액','TMPV6':'외국인시총','TMPV7':'외국인비중'}
         return self._get(start=start, end=end, gap=gap, code=code, column=column)
+
 
     def around(self, start:str=None, end:str=None, gap:int=7) -> pandas.DataFrame:
         r"""(구간) 증시 주변자금 현황
@@ -37,6 +39,7 @@ class KofiaData(HeaderOfKofia):
         code = "STATSCU0100000060BO"
         return self._get(start=start, end=end, gap=gap, code=code, column=column)
 
+
     def short(self, date:str=None, market='KOSPI') -> pandas.DataFrame:
         r"""(일간) 종목별 대차거래내역
         (str) date_string : 기준날짜
@@ -48,6 +51,7 @@ class KofiaData(HeaderOfKofia):
         assert market.upper() in ['KOSPI', 'KOSDAQ'], "KOSPI, KOSDAQ 을 입력해 주세요"
         market = {'KOSPI':1, 'KOSDAQ':2}[market.upper()]
         return self._get(start=date, code=code, column=column, market=market)
+
 
     def short_balance(self, start:str=None, end:str=None, gap:int=7) -> pandas.DataFrame:
         r"""(구간) 신용공여 잔고추이
@@ -92,4 +96,7 @@ class KofiaData(HeaderOfKofia):
     #     return df.dropna(axis=1, how='all')
 
 # class method ...
-kofia = KofiaData()
+
+def short(date:str=None, market='KOSPI'):
+    df = KofiaData().short(date=date, market=market)
+    return df

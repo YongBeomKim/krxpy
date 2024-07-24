@@ -60,21 +60,19 @@ class Daum:
 
     # 수집 데이터 필터링
     @elapsed_time
-    def get(self, raw=False) -> list:
-        r"""수집 데이터 필터링
-        raw (dict) : API 원본출력"""
+    def get(self) -> list:
+        r"""수집 데이터 필터링"""
 
-        def get_market(option:str, raw=False) -> list:
+        def get_market(option:str) -> list:
             r"""Sector 에서 중복되는 기업명 필터링
-            option (str) : 마켓구분 ex) KOSPI, KOSDAQ
-            raw (dict)   : API 원본출력"""
+            option (str) : 마켓구분 ex) KOSPI, KOSDAQ """
             items = []
             url = self.params(option=option)
             data = self.response(url)
 
             # API 수집된 원본을 출력
-            if raw:
-                return data
+            # if raw:
+            #     return data
 
             # 반복하며 개별 기업정보만 필터링
             for _ in data['data']:
@@ -98,7 +96,7 @@ class Daum:
 
         result = [] 
         for _ in ['kospi', 'kosdaq']:
-            items = get_market(_, raw=raw)
+            items = get_market(_)
             for item in items:
                 item['market'] = _.upper()
             result += items
@@ -135,13 +133,12 @@ class Daum:
 
 
 # Daum Sector Infos
-def get_price_daum(filter=True, raw=False) -> pandas.DataFrame:
+def get_price_daum(filter=True) -> pandas.DataFrame:
 
     r"""Market Sector from `Daum`
-    filter (bool) : DataFrame 필터링
-    raw (bool) : API 데이터 필터링"""
+    filter (bool) : DataFrame 필터링 """
 
-    json_data = Daum().get(raw=raw)
+    json_data = Daum().get()
     df = pandas.DataFrame(json_data)
 
     # [if] DataFrame 필터링            
