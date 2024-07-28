@@ -24,7 +24,8 @@ class Ticker(KrxWebIo):
 def get_ticker(ticker:str=None):
     r"""ticker 변환정보 ticker 출력"""
 
-    file_name = 'krx_codes'
+    # 확장자가 없으면 `check_file` 에서 오류발생
+    file_name = 'krx_codes.pkl' 
     file_path = "./.pykrx/" + file_name
     CHECK = check_file(file_path)
     if CHECK:

@@ -1,1 +1,1 @@
-from .shinhan import df_shinhan
+from .shinhan import get_shinhan

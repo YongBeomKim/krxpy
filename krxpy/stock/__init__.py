@@ -2,7 +2,7 @@
 # 하위 함수로 목록 정의완료하기
 from .kind import ipo_kind
 from .kind_info import notice_kind, info_kind, note_kind
-from .stock_api import info_krx
+from .stock_api import info_krx, info_krx_tor
 
 
 # @property

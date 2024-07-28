@@ -3,14 +3,18 @@ from .base import *
 import requests
 from pytip import FakeAgent
 
-def df_shinhan(code:str=None):
+
+def get_shinhan(ticker:str=None, display=True):
+
     # http://open.shinhaninvest.com/goodicyber/mk/1206.jsp?code=005930'
-    url = f"https://open.shinhansec.com/goodicyber/mk/1206.jsp?code={code}"
+    url = f"https://open.shinhansec.com/goodicyber/mk/1206.jsp?code={ticker}"
     headers = {"User-Agent":FakeAgent.random}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         try:
-            df = pandas.read_html(response.text)[-1]
+            response_io = StringIO(str(response.text))
+            df = pandas.read_html(response_io, flavor='html5lib')[-1] # , encoding='cp949'
+            # df = pandas.read_html(response.text)[-1]
             ## Post Processing
             # 컬럼찾기 및 테이블 재조정 하기
             for no,_ in enumerate(df[0]):
@@ -52,5 +56,7 @@ def df_shinhan(code:str=None):
             return df_new
 
         except Exception as E:
-            print(E)
+            if display:
+                print(f"{ticker} has Error : {E}")
+            pass
     return None
